@@ -1,0 +1,1048 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pastelería La Ceiba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#1F4D3A; --verde-2:#2E6B4F; --verde-claro:#E4EEE7;
+  --crema:#FBF6EE; --papel:#FFFFFF; --caramelo:#C9853F; --caramelo-2:#A96B2C;
+  --rosa:#F2D3C4; --tinta:#1E1B16; --gris:#6E675C; --linea:#E8DFD0;
+  --error:#B3261E; --error-bg:#FDECEA; --exito:#1E7D4F; --exito-bg:#E6F4EC;
+  --aviso:#8A5A00; --aviso-bg:#FFF4D6;
+  --radio:16px; --sombra:0 1px 2px rgba(30,27,22,.06),0 8px 24px rgba(30,27,22,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--crema);color:var(--tinta);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;line-height:1.15;margin:0 0 .4em;letter-spacing:-.01em}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Topbar */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(251,246,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+.topbar-in{display:flex;align-items:center;gap:16px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand svg{width:40px;height:40px}
+.brand b{font-family:"Fraunces",serif;font-size:1.25rem;color:var(--verde);display:block;line-height:1}
+.brand small{color:var(--gris);font-size:.78rem}
+.nav{margin-left:auto;display:flex;gap:4px;align-items:center}
+.nav a{text-decoration:none;padding:8px 12px;border-radius:999px;color:var(--gris);font-weight:500}
+.nav a:hover{background:var(--verde-claro);color:var(--verde)}
+.cart-btn{position:relative;display:flex;align-items:center;gap:8px;background:var(--verde);color:#fff;border:0;border-radius:999px;padding:10px 16px;font-weight:700}
+.cart-btn:hover{background:var(--verde-2)}
+.badge{background:var(--caramelo);color:#fff;border-radius:999px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:.78rem;padding:0 6px}
+.badge.bump{animation:bump .35s}
+@keyframes bump{50%{transform:scale(1.35)}}
+@media (max-width:640px){.nav a{display:none}.brand small{display:none}}
+
+/* Buttons & inputs */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 20px;font-weight:700;text-decoration:none;transition:.15s}
+.btn-primary{background:var(--verde);color:#fff}.btn-primary:hover{background:var(--verde-2)}
+.btn-accent{background:var(--caramelo);color:#fff}.btn-accent:hover{background:var(--caramelo-2)}
+.btn-ghost{background:transparent;color:var(--verde);border:1.5px solid var(--linea)}.btn-ghost:hover{border-color:var(--verde)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn-block{width:100%}
+.link{background:none;border:0;color:var(--verde);font-weight:700;padding:0;text-decoration:underline;text-underline-offset:3px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-weight:500;font-size:.92rem}
+.field .opt{color:var(--gris);font-weight:400}
+input,select,textarea{font:inherit;padding:12px 14px;border:1.5px solid var(--linea);border-radius:10px;background:#fff;color:var(--tinta);width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 3px var(--verde-claro)}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--error);background:var(--error-bg)}
+.field .err{color:var(--error);font-size:.84rem;display:none}
+.field.invalid .err{display:block}
+.field.valid input{border-color:#9CC7AE}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.row{grid-template-columns:1fr}}
+
+/* Screens */
+.screen{display:none;padding:28px 0 64px;animation:fade .25s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);box-shadow:var(--sombra)}
+.crumbs{color:var(--gris);font-size:.9rem;margin-bottom:16px}
+.crumbs a{text-decoration:none;color:var(--verde);font-weight:500}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;background:var(--verde);color:#fff;border-radius:24px;padding:40px;overflow:hidden;position:relative;margin-bottom:32px}
+.hero h1{font-size:clamp(2rem,4.5vw,3.2rem)}
+.hero p{color:#D6E6DC;max-width:46ch;font-size:1.05rem}
+.hero .pills{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.hero .pill{background:rgba(255,255,255,.12);padding:6px 12px;border-radius:999px;font-size:.88rem}
+.hero-art{display:grid;place-items:center}
+.hero-art svg{width:100%;max-width:340px}
+@media (max-width:780px){.hero{grid-template-columns:1fr;padding:28px 22px}.hero-art{display:none}}
+
+/* Catalog */
+.cat-head{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--linea);background:#fff;border-radius:999px;padding:8px 14px;font-weight:500;color:var(--gris)}
+.chip.on{background:var(--verde);border-color:var(--verde);color:#fff}
+.search{max-width:260px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.prod{display:flex;flex-direction:column;overflow:hidden;transition:transform .15s, box-shadow .15s;cursor:pointer}
+.prod:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(30,27,22,.1)}
+.prod .art{background:var(--rosa);aspect-ratio:5/4;display:grid;place-items:center;position:relative}
+.prod .art svg{width:72%}
+.prod .tag{position:absolute;top:12px;left:12px;background:#fff;color:var(--verde);font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:999px}
+.prod .tag.out{background:var(--tinta);color:#fff}
+.prod .body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.prod h3{font-size:1.15rem;margin:0}
+.prod .desc{color:var(--gris);font-size:.9rem;margin:0;flex:1}
+.prod .foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.price{font-weight:700;font-size:1.1rem;color:var(--verde)}
+.price small{font-weight:400;color:var(--gris);font-size:.8rem}
+.prod.soldout .art{filter:grayscale(.7);opacity:.75}
+.empty-search{padding:40px;text-align:center;color:var(--gris)}
+
+/* Detail */
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.detail .art{background:var(--rosa);border-radius:24px;display:grid;place-items:center;aspect-ratio:1/1}
+.detail .art svg{width:70%}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:8px 0 18px}
+.opt-size{border:1.5px solid var(--linea);background:#fff;border-radius:12px;padding:12px;text-align:left}
+.opt-size b{display:block}
+.opt-size span{color:var(--gris);font-size:.85rem}
+.opt-size em{font-style:normal;color:var(--verde);font-weight:700;display:block;margin-top:4px}
+.opt-size.on{border-color:var(--verde);background:var(--verde-claro);box-shadow:0 0 0 2px var(--verde) inset}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--linea);border-radius:12px;background:#fff;overflow:hidden}
+.qty button{width:42px;height:44px;border:0;background:#fff;font-size:1.2rem;color:var(--verde)}
+.qty button:hover:not([disabled]){background:var(--verde-claro)}
+.qty button[disabled]{color:#C9C2B6;cursor:not-allowed}
+.qty input{width:52px;border:0;text-align:center;font-weight:700;padding:0;height:44px}
+.qty input:focus{box-shadow:none}
+.qty.sm button{width:34px;height:36px}.qty.sm input{width:40px;height:36px}
+.calc{background:var(--crema);border:1px dashed var(--linea);border-radius:12px;padding:14px 16px;margin:18px 0;display:grid;gap:4px}
+.calc div{display:flex;justify-content:space-between}
+.calc .big{font-size:1.25rem;font-weight:700;color:var(--verde);border-top:1px solid var(--linea);padding-top:8px;margin-top:4px}
+.stock{font-size:.88rem;display:inline-flex;gap:6px;align-items:center;margin-bottom:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--exito)}
+.stock.low .dot{background:var(--caramelo)}.stock.out .dot{background:var(--error)}
+@media (max-width:780px){.detail{grid-template-columns:1fr}}
+
+/* Stepper */
+.stepper{display:flex;gap:6px;margin-bottom:24px;overflow-x:auto;padding-bottom:4px}
+.step{flex:1;min-width:110px;display:flex;align-items:center;gap:8px;color:var(--gris);font-size:.88rem;font-weight:500}
+.step .n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--linea);background:#fff;font-weight:700;flex:none}
+.step::after{content:"";flex:1;height:2px;background:var(--linea);border-radius:2px}
+.step:last-child::after{display:none}
+.step.done .n{background:var(--verde);border-color:var(--verde);color:#fff}
+.step.done::after{background:var(--verde)}
+.step.now{color:var(--tinta)}.step.now .n{border-color:var(--verde);color:var(--verde);box-shadow:0 0 0 3px var(--verde-claro)}
+
+/* Layout two col */
+.two{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.panel{padding:22px}
+.panel h2{font-size:1.4rem}
+.sticky{position:sticky;top:88px}
+
+/* Cart lines */
+.line{display:grid;grid-template-columns:76px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--linea);align-items:center}
+.line:last-child{border-bottom:0}
+.line .thumb{background:var(--rosa);border-radius:12px;aspect-ratio:1;display:grid;place-items:center}
+.line .thumb svg{width:80%}
+.line h3{font-size:1.02rem;margin:0}
+.line .meta{color:var(--gris);font-size:.85rem}
+.line .ctrl{display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
+.line .cost{text-align:right}
+.line .cost b{display:block;font-size:1.05rem}
+.line .cost span{color:var(--gris);font-size:.82rem}
+.remove{background:none;border:0;color:var(--error);font-size:.85rem;font-weight:500;padding:4px 0}
+@media (max-width:520px){.line{grid-template-columns:60px 1fr}.line .cost{grid-column:2;text-align:left}}
+
+/* Summary */
+.sum-row{display:flex;justify-content:space-between;padding:6px 0;color:var(--gris)}
+.sum-row b{color:var(--tinta);font-weight:500}
+.sum-row.disc b{color:var(--exito)}
+.sum-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1.5px solid var(--linea);margin-top:8px;padding-top:12px}
+.sum-total span{font-weight:700}
+.sum-total b{font-family:"Fraunces",serif;font-size:1.8rem;color:var(--verde)}
+.sum-note{font-size:.8rem;color:var(--gris);margin-top:4px}
+.mini{display:flex;justify-content:space-between;font-size:.9rem;padding:4px 0;gap:10px}
+.mini span:first-child{color:var(--gris)}
+.coupon{display:flex;gap:8px;margin:14px 0 6px}
+.coupon input{text-transform:uppercase}
+.coupon .btn{padding:10px 14px}
+
+/* Alerts */
+.alert{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;font-size:.9rem;margin:10px 0}
+.alert svg{flex:none;width:20px;height:20px;margin-top:1px}
+.alert.error{background:var(--error-bg);color:var(--error)}
+.alert.ok{background:var(--exito-bg);color:var(--exito)}
+.alert.info{background:var(--verde-claro);color:var(--verde)}
+.alert.warn{background:var(--aviso-bg);color:var(--aviso)}
+
+/* Radio cards */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0}
+.choice label{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--linea);border-radius:12px;padding:14px;background:#fff;cursor:pointer;height:100%}
+.choice label b{display:block}
+.choice label span{color:var(--gris);font-size:.85rem}
+.choice input:checked + label{border-color:var(--verde);background:var(--verde-claro);box-shadow:0 0 0 2px var(--verde) inset}
+.choice input:focus-visible + label{outline:3px solid var(--verde-claro)}
+.choice .ico{width:36px;height:36px;border-radius:10px;background:#fff;display:grid;place-items:center;flex:none;border:1px solid var(--linea)}
+@media (max-width:560px){.choices{grid-template-columns:1fr}}
+fieldset{border:0;padding:0;margin:0 0 6px}
+legend{font-family:"Fraunces",serif;font-size:1.15rem;font-weight:700;margin-bottom:10px}
+
+/* Card preview */
+.cc{background:linear-gradient(135deg,var(--verde),#14362A);color:#fff;border-radius:16px;padding:20px;aspect-ratio:1.6/1;max-width:340px;display:flex;flex-direction:column;justify-content:space-between;margin-bottom:18px;position:relative;overflow:hidden}
+.cc::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(201,133,63,.35)}
+.cc .num{font-size:1.25rem;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.cc .bot{display:flex;justify-content:space-between;font-size:.82rem;text-transform:uppercase}
+.cc .chipc{width:38px;height:28px;border-radius:6px;background:#E3C27A}
+.testcards{font-size:.84rem;background:var(--aviso-bg);color:var(--aviso);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.testcards code{background:#fff;padding:2px 6px;border-radius:6px;cursor:pointer;color:var(--tinta);display:inline-block;margin:2px 0}
+.secure{display:flex;gap:6px;align-items:center;color:var(--gris);font-size:.82rem;justify-content:center;margin-top:10px}
+
+/* Result */
+.result{max-width:680px;margin:0 auto;text-align:center}
+.result .icon{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px}
+.result.ok .icon{background:var(--exito-bg);color:var(--exito)}
+.result.bad .icon{background:var(--error-bg);color:var(--error)}
+.result .icon svg{width:42px;height:42px}
+.result h1{font-size:clamp(1.8rem,4vw,2.4rem)}
+.result p.lead{color:var(--gris);font-size:1.05rem}
+.ticket{text-align:left;margin:24px 0;padding:22px}
+.ticket .head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1.5px dashed var(--linea);padding-bottom:12px;margin-bottom:12px}
+.ticket .code{font-family:"Fraunces",serif;font-size:1.3rem;color:var(--verde)}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.timeline{display:flex;justify-content:space-between;margin:18px 0 6px;position:relative}
+.timeline::before{content:"";position:absolute;top:13px;left:10%;right:10%;height:2px;background:var(--linea)}
+.timeline div{position:relative;flex:1;text-align:center;font-size:.8rem;color:var(--gris)}
+.timeline i{display:block;width:28px;height:28px;border-radius:50%;margin:0 auto 6px;background:#fff;border:2px solid var(--linea)}
+.timeline .on i{background:var(--exito);border-color:var(--exito)}
+.timeline .on{color:var(--tinta);font-weight:500}
+
+/* Empty */
+.empty{text-align:center;padding:56px 20px}
+.empty svg{width:120px;margin-bottom:12px}
+.empty p{color:var(--gris)}
+
+/* Overlay processing */
+.overlay{position:fixed;inset:0;background:rgba(30,27,22,.55);display:none;place-items:center;z-index:60;padding:16px}
+.overlay.on{display:grid}
+.proc{background:#fff;border-radius:20px;padding:32px;max-width:360px;width:100%;text-align:center}
+.spinner{width:56px;height:56px;border-radius:50%;border:5px solid var(--verde-claro);border-top-color:var(--verde);animation:spin .9s linear infinite;margin:0 auto 18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proc-steps{text-align:left;margin-top:16px;font-size:.9rem;color:var(--gris);display:grid;gap:6px}
+.proc-steps .d{color:var(--exito)}
+
+/* Toast */
+.toasts{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:grid;gap:8px;z-index:70;width:min(420px,calc(100% - 32px))}
+.toast{background:var(--tinta);color:#fff;border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:up .25s ease}
+.toast.error{background:var(--error)}.toast.ok{background:var(--exito)}
+.toast button{margin-left:auto;background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:8px;padding:6px 10px;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}
+
+/* Footer */
+footer{background:var(--verde);color:#D6E6DC;padding:36px 0;margin-top:20px}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
+footer b{color:#fff;font-family:"Fraunces",serif;font-size:1.1rem}
+footer p{margin:6px 0;font-size:.9rem}
+@media (max-width:700px){footer .cols{grid-template-columns:1fr}}
+
+/* Print receipt */
+@media print{
+  .topbar,footer,.actions,.stepper,.toasts{display:none!important}
+  body{background:#fff}
+  .screen{display:none!important}#s-exito{display:block!important}
+  .card{box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a href="#/" class="brand" aria-label="Pastelería La Ceiba, inicio">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="23" fill="#1F4D3A"/>
+        <path d="M22.5 40v-11c-2-1.5-4.5-3-7-3.2M25.5 40v-11c2-1.5 4.5-3 7-3.2M24 30v-9" stroke="#C9853F" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <ellipse cx="24" cy="16" rx="14" ry="6" fill="#7FB394"/>
+        <ellipse cx="15" cy="19" rx="6" ry="3.5" fill="#5E9A77"/>
+        <ellipse cx="33" cy="19" rx="6" ry="3.5" fill="#5E9A77"/>
+        <rect x="14" y="39" width="20" height="2.5" rx="1.25" fill="#C9853F"/>
+      </svg>
+      <span><b>La Ceiba</b><small>Pastelería artesanal</small></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#/">Catálogo</a>
+      <a href="#/" data-scroll="como">Cómo comprar</a>
+      <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+        <span class="hide-sm">Carrito</span>
+        <span class="badge" id="cartCount">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ CATÁLOGO ============ -->
+  <section class="screen" id="s-catalogo" aria-labelledby="t-cat">
+    <div class="hero">
+      <div>
+        <h1>Hecho a mano,<br>como en casa.</h1>
+        <p>Pasteles, pan dulce y postres horneados cada mañana. Encarga en línea y recógelo en tienda o recíbelo en tu puerta.</p>
+        <div class="pills"><span class="pill">🎂 Pasteles por encargo</span><span class="pill">🚚 Envío gratis desde $40</span><span class="pill">✍️ Dedicatoria sin costo</span></div>
+        <a href="#catalogo" class="btn btn-accent">Ver el catálogo</a>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+    </div>
+
+    <div class="cat-head" id="catalogo">
+      <div>
+        <h2 id="t-cat" style="font-size:1.8rem;margin:0">Nuestro catálogo</h2>
+        <span style="color:var(--gris)">Precios en USD, IVA incluido.</span>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <div class="chips" id="chips" role="tablist" aria-label="Filtrar por categoría"></div>
+        <input class="search" id="search" type="search" placeholder="Buscar…" aria-label="Buscar producto">
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+
+    <div class="card panel" id="como" style="margin-top:40px">
+      <h2>Cómo comprar</h2>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+        <div><b>1. Elige</b><p style="color:var(--gris);margin:4px 0">Selecciona producto, tamaño y cantidad.</p></div>
+        <div><b>2. Revisa tu carrito</b><p style="color:var(--gris);margin:4px 0">Ajusta cantidades y aplica cupones.</p></div>
+        <div><b>3. Entrega</b><p style="color:var(--gris);margin:4px 0">Retiro en tienda o envío a domicilio.</p></div>
+        <div><b>4. Paga</b><p style="color:var(--gris);margin:4px 0">Con tarjeta o en efectivo al recibir.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DETALLE ============ -->
+  <section class="screen" id="s-detalle"><div id="detalle"></div></section>
+
+  <!-- ============ CARRITO ============ -->
+  <section class="screen" id="s-carrito">
+    <div class="stepper" data-step="1"></div>
+    <div id="carrito"></div>
+  </section>
+
+  <!-- ============ DATOS ============ -->
+  <section class="screen" id="s-datos">
+    <div class="stepper" data-step="2"></div>
+    <div class="two">
+      <form class="card panel" id="formDatos" novalidate>
+        <h2>Datos de entrega</h2>
+        <div id="datosAlert"></div>
+        <fieldset>
+          <legend>¿Cómo quieres recibirlo?</legend>
+          <div class="choices">
+            <div class="choice">
+              <input type="radio" name="metodo" id="m-tienda" value="tienda">
+              <label for="m-tienda"><span class="ico">🏪</span><span><b>Retiro en tienda</b><span>Sin costo · listo desde las 8:00 a. m.</span></span></label>
+            </div>
+            <div class="choice">
+              <input type="radio" name="metodo" id="m-domicilio" value="domicilio">
+              <label for="m-domicilio"><span class="ico">🚚</span><span><b>Envío a domicilio</b><span id="envioHint">$3.50 · gratis desde $40</span></span></label>
+            </div>
+          </div>
+          <div class="field" data-f="metodo" style="margin-top:-10px"><span class="err">Elige una forma de entrega.</span></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Contacto</legend>
+          <div class="field" data-f="nombre"><label for="f-nombre">Nombre completo</label><input id="f-nombre" autocomplete="name" placeholder="Ej. María López"><span class="err">Escribe tu nombre y apellido.</span></div>
+          <div class="row">
+            <div class="field" data-f="tel"><label for="f-tel">Teléfono</label><input id="f-tel" inputmode="numeric" autocomplete="tel" placeholder="7000-0000" maxlength="9"><span class="err">Ingresa un número de 8 dígitos.</span></div>
+            <div class="field" data-f="email"><label for="f-email">Correo electrónico</label><input id="f-email" type="email" autocomplete="email" placeholder="tu@correo.com"><span class="err">Revisa el formato del correo.</span></div>
+          </div>
+        </fieldset>
+
+        <fieldset id="fsDireccion" hidden>
+          <legend>Dirección</legend>
+          <div class="field" data-f="dir"><label for="f-dir">Dirección completa</label><input id="f-dir" autocomplete="street-address" placeholder="Colonia, calle, número de casa"><span class="err">Necesitamos la dirección para el envío.</span></div>
+          <div class="field" data-f="muni"><label for="f-muni">Municipio</label>
+            <select id="f-muni"><option value="">Selecciona…</option><option>San Salvador</option><option>Antiguo Cuscatlán</option><option>Santa Tecla</option><option>Soyapango</option><option>Mejicanos</option><option>Ilopango</option><option>Apopa</option><option value="fuera">Otro (fuera de cobertura)</option></select>
+            <span class="err" id="muniErr">Selecciona un municipio.</span></div>
+          <div class="field"><label for="f-ref">Punto de referencia <span class="opt">(opcional)</span></label><input id="f-ref" placeholder="Frente al parque, portón negro…"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Fecha y hora</legend>
+          <div class="row">
+            <div class="field" data-f="fecha"><label for="f-fecha">Fecha</label><input id="f-fecha" type="date"><span class="err" id="fechaErr">Elige una fecha válida.</span></div>
+            <div class="field" data-f="hora"><label for="f-hora">Horario</label>
+              <select id="f-hora"><option value="">Selecciona…</option><option>8:00 – 10:00 a. m.</option><option>10:00 a. m. – 12:00 m.</option><option>12:00 – 2:00 p. m.</option><option>2:00 – 4:00 p. m.</option><option>4:00 – 6:00 p. m.</option></select>
+              <span class="err">Elige un horario.</span></div>
+          </div>
+          <div class="field"><label for="f-notas">Indicaciones <span class="opt">(opcional)</span></label><textarea id="f-notas" rows="2" maxlength="200" placeholder="Alergias, instrucciones de entrega…"></textarea></div>
+        </fieldset>
+
+        <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:8px">
+          <a href="#/carrito" class="btn btn-ghost">← Volver al carrito</a>
+          <button class="btn btn-primary" type="submit">Continuar al pago →</button>
+        </div>
+      </form>
+      <aside class="card panel sticky" id="sumDatos"></aside>
+    </div>
+  </section>
+
+  <!-- ============ PAGO ============ -->
+  <section class="screen" id="s-pago">
+    <div class="stepper" data-step="3"></div>
+    <div class="two">
+      <form class="card panel" id="formPago" novalidate>
+        <h2>Pago</h2>
+        <div id="pagoAlert"></div>
+        <fieldset>
+          <legend>Método de pago</legend>
+          <div class="choices">
+            <div class="choice"><input type="radio" name="pago" id="p-tarjeta" value="tarjeta" checked><label for="p-tarjeta"><span class="ico">💳</span><span><b>Tarjeta</b><span>Crédito o débito</span></span></label></div>
+            <div class="choice"><input type="radio" name="pago" id="p-efectivo" value="efectivo"><label for="p-efectivo"><span class="ico">💵</span><span><b id="efLabel">Efectivo</b><span id="efHint">Pagas al recibir</span></span></label></div>
+          </div>
+        </fieldset>
+
+        <div id="boxTarjeta">
+          <div class="cc" aria-hidden="true">
+            <div style="display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1"><span class="chipc"></span><span id="ccBrand" style="font-weight:700">TARJETA</span></div>
+            <div class="num" id="ccNum" style="position:relative;z-index:1">•••• •••• •••• ••••</div>
+            <div class="bot" style="position:relative;z-index:1"><span id="ccName">NOMBRE DEL TITULAR</span><span id="ccExp">MM/AA</span></div>
+          </div>
+          <div class="testcards">
+            <b>Modo demostración</b> · toca para usar una tarjeta de prueba:<br>
+            <code data-card="4242 4242 4242 4242">4242 4242 4242 4242</code> pago aprobado<br>
+            <code data-card="4000 0000 0000 0002">4000 0000 0000 0002</code> rechazada por fondos<br>
+            <code data-card="4000 0000 0000 0119">4000 0000 0000 0119</code> error de conexión
+          </div>
+          <div class="field" data-f="cnum"><label for="c-num">Número de tarjeta</label><input id="c-num" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" maxlength="19"><span class="err">El número de tarjeta no es válido.</span></div>
+          <div class="field" data-f="cname"><label for="c-name">Nombre en la tarjeta</label><input id="c-name" autocomplete="cc-name" placeholder="Como aparece en la tarjeta"><span class="err">Escribe el nombre del titular.</span></div>
+          <div class="row">
+            <div class="field" data-f="cexp"><label for="c-exp">Vencimiento</label><input id="c-exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" maxlength="5"><span class="err" id="expErr">Fecha inválida.</span></div>
+            <div class="field" data-f="ccvv"><label for="c-cvv">CVV</label><input id="c-cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4"><span class="err">3 o 4 dígitos.</span></div>
+          </div>
+        </div>
+
+        <div id="boxEfectivo" hidden>
+          <div class="field" data-f="cambio"><label for="e-cambio">¿Con cuánto pagarás? <span class="opt">(para llevar cambio)</span></label><input id="e-cambio" inputmode="decimal" placeholder="Ej. 50.00"><span class="err" id="cambioErr">El monto debe cubrir el total.</span></div>
+        </div>
+
+        <label style="display:flex;gap:10px;align-items:flex-start;margin:6px 0 16px;font-size:.92rem" class="field" data-f="terms">
+          <input type="checkbox" id="terms" style="width:18px;height:18px;margin-top:2px;flex:none">
+          <span>Acepto las condiciones de venta y la política de cancelación (hasta 24 h antes de la entrega).<span class="err" style="display:none">Debes aceptar las condiciones.</span></span>
+        </label>
+
+        <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap">
+          <a href="#/datos" class="btn btn-ghost">← Datos de entrega</a>
+          <button class="btn btn-accent" type="submit" id="payBtn">Pagar</button>
+        </div>
+        <div class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pago simulado · no se realiza ningún cargo real</div>
+      </form>
+      <aside class="card panel sticky" id="sumPago"></aside>
+    </div>
+  </section>
+
+  <!-- ============ ÉXITO ============ -->
+  <section class="screen" id="s-exito">
+    <div class="stepper" data-step="4"></div>
+    <div id="exito"></div>
+  </section>
+
+  <!-- ============ ERROR ============ -->
+  <section class="screen" id="s-error">
+    <div class="stepper" data-step="3"></div>
+    <div id="errorBox"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><b>Pastelería La Ceiba</b><p>Repostería artesanal salvadoreña.</p><p style="opacity:.7">Sitio de demostración: las compras son simuladas.</p></div>
+    <div><b>Horario</b><p>Lunes a sábado · 7:00 a. m. – 7:00 p. m.</p><p>Domingo · 8:00 a. m. – 2:00 p. m.</p></div>
+    <div><b>Contacto</b><p>San Salvador, El Salvador</p><p>pedidos@pasteleriaceiba.sv</p></div>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="procT">
+  <div class="proc">
+    <div class="spinner"></div>
+    <h3 id="procT">Procesando tu pago</h3>
+    <p style="color:var(--gris);margin:0">No cierres esta ventana.</p>
+    <div class="proc-steps" id="procSteps"></div>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+/* ======================= DATOS ======================= */
+const PRODUCTS = [
+  {id:'tres-leches', name:'Pastel Tres Leches', cat:'Pasteles', shape:'cake', colors:['#F6E7C8','#FFFDF8','#C9853F'], tag:'Más vendido', stock:14, msg:true,
+   desc:'Bizcocho esponjoso bañado en tres leches, cubierto de merengue suave y un toque de canela.',
+   sizes:[{id:'p',label:'Porción',detail:'1 persona',price:3.25},{id:'m',label:'Mediano',detail:'8 porciones',price:22.00},{id:'g',label:'Grande',detail:'16 porciones',price:38.50}]},
+  {id:'chocolate', name:'Pastel de Chocolate', cat:'Pasteles', shape:'cake', colors:['#6B3E26','#3B2015','#E7B7A5'], stock:9, msg:true,
+   desc:'Capas de bizcocho de cacao con relleno de ganache y cobertura de chocolate semiamargo.',
+   sizes:[{id:'p',label:'Porción',detail:'1 persona',price:3.50},{id:'m',label:'Mediano',detail:'8 porciones',price:24.00},{id:'g',label:'Grande',detail:'16 porciones',price:42.00}]},
+  {id:'zanahoria', name:'Pastel de Zanahoria', cat:'Pasteles', shape:'cake', colors:['#D98C4A','#FFF8EE','#7FB394'], stock:3, msg:true,
+   desc:'Zanahoria rallada, nueces y especias, con frosting de queso crema.',
+   sizes:[{id:'p',label:'Porción',detail:'1 persona',price:3.25},{id:'m',label:'Mediano',detail:'8 porciones',price:23.00},{id:'g',label:'Grande',detail:'16 porciones',price:40.00}]},
+  {id:'cheesecake', name:'Cheesecake de Fresa', cat:'Postres', shape:'slice', colors:['#FFF4DC','#D9465F','#C9A26B'], tag:'Nuevo', stock:10, msg:false,
+   desc:'Base de galleta y mantequilla, crema de queso horneada y coulis de fresas frescas.',
+   sizes:[{id:'p',label:'Porción',detail:'1 persona',price:3.75},{id:'m',label:'Entero',detail:'10 porciones',price:30.00}]},
+  {id:'quesadilla', name:'Quesadilla Salvadoreña', cat:'Pan dulce', shape:'bread', colors:['#E2A65A','#F5D08A','#B97A33'], stock:30, msg:false,
+   desc:'Receta tradicional con queso duro, crema y ajonjolí tostado en la superficie.',
+   sizes:[{id:'p',label:'Porción',detail:'1 pieza',price:1.25},{id:'m',label:'Molde completo',detail:'12 piezas',price:13.50}]},
+  {id:'semita', name:'Semita Alta', cat:'Pan dulce', shape:'bread', colors:['#C98A4B','#E8B76F','#7A3E1D'], stock:20, msg:false,
+   desc:'Masa suave rellena de dulce de piña y atado, horneada hasta dorar.',
+   sizes:[{id:'p',label:'Pieza',detail:'1 unidad',price:1.50},{id:'m',label:'Bandeja',detail:'8 piezas',price:10.50}]},
+  {id:'conchas', name:'Caja de Pan Dulce', cat:'Pan dulce', shape:'bread', colors:['#E9C189','#FFF0DA','#E8B4A0'], stock:12, msg:false,
+   desc:'Surtido de conchas, salpores y cuernitos horneados esta mañana.',
+   sizes:[{id:'m',label:'Media docena',detail:'6 piezas',price:5.00},{id:'g',label:'Docena',detail:'12 piezas',price:9.00}]},
+  {id:'maracuya', name:'Tarta de Maracuyá', cat:'Postres', shape:'tart', colors:['#E9C27A','#F4B400','#5E3C1E'], stock:0, msg:false,
+   desc:'Masa quebrada con crema de maracuyá y semillas. Disponible de nuevo el fin de semana.',
+   sizes:[{id:'p',label:'Porción',detail:'1 persona',price:3.50},{id:'m',label:'Entera',detail:'8 porciones',price:26.00}]}
+];
+const COUPONS = {
+  'CEIBA10':{type:'pct', value:.10, label:'10 % de descuento'},
+  'BIENVENIDA':{type:'fix', value:5, min:20, label:'$5 de descuento en compras desde $20'}
+};
+const ENVIO = 3.50, ENVIO_GRATIS = 40, IVA = .13;
+
+/* ======================= ESTADO ======================= */
+const store = {
+  get(k,d){try{const v=localStorage.getItem('ceiba_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('ceiba_'+k,JSON.stringify(v))}catch(e){}}
+};
+const state = {
+  cart: store.get('cart', []),
+  coupon: store.get('coupon', null),
+  order: store.get('order', {}),
+  filter: 'Todos', query: '',
+  lastOrder: null, lastError: null,
+  detail: {size:null, qty:1, msg:''}
+};
+const save = () => { store.set('cart',state.cart); store.set('coupon',state.coupon); store.set('order',state.order); };
+
+/* ======================= UTILIDADES ======================= */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const money = n => new Intl.NumberFormat('es-SV',{style:'currency',currency:'USD'}).format(n);
+const r2 = n => Math.round(n*100)/100;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const byId = id => PRODUCTS.find(p => p.id === id);
+const icons = {
+  err:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 7v6M12 17h.01"/></svg>',
+  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7h.01"/></svg>'
+};
+const alertHTML = (type, html) => `<div class="alert ${type}" role="${type==='error'?'alert':'status'}">${icons[type==='error'||type==='warn'?'err':type==='ok'?'ok':'info']}<div>${html}</div></div>`;
+
+function toast(msg, type='', action){
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span>${msg}</span>` + (action ? `<button>${action.label}</button>` : '');
+  if (action) t.querySelector('button').onclick = () => { action.fn(); t.remove(); };
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), 3800);
+}
+
+/* ======================= ILUSTRACIONES ======================= */
+function art(p){
+  const [a,b,c] = p.colors;
+  const shadow = '<ellipse cx="100" cy="142" rx="80" ry="9" fill="rgba(30,27,22,.10)"/>';
+  if (p.shape === 'cake'){
+    let drips=''; for(let i=0;i<7;i++){ drips += `<rect x="${34+i*19}" y="66" width="12" height="${14+((i*7)%11)}" rx="6" fill="${b}"/>`; }
+    return `<svg viewBox="0 0 200 160" aria-hidden="true">${shadow}
+      <rect x="30" y="70" width="140" height="68" rx="10" fill="${a}"/>
+      <rect x="30" y="102" width="140" height="7" fill="${c}" opacity=".5"/>
+      <rect x="30" y="66" width="140" height="10" rx="5" fill="${b}"/>${drips}
+      <ellipse cx="100" cy="66" rx="70" ry="13" fill="${b}"/>
+      <circle cx="70" cy="58" r="7" fill="${c}"/><circle cx="100" cy="53" r="8" fill="${c}"/><circle cx="130" cy="58" r="7" fill="${c}"/>
+      <path d="M100 45v-12" stroke="#1F4D3A" stroke-width="3" stroke-linecap="round"/><path d="M100 32c4-4 9-3 10 0-4 3-8 3-10 0" fill="#5E9A77"/></svg>`;
+  }
+  if (p.shape === 'slice'){
+    return `<svg viewBox="0 0 200 160" aria-hidden="true">${shadow}
+      <path d="M30 130 L170 130 L170 82 L60 52 Z" fill="${a}"/>
+      <path d="M30 130 L170 130 L170 116 L30 116 Z" fill="${c}"/>
+      <path d="M60 52 L170 82 L170 92 Q150 104 140 90 Q125 102 112 86 Q98 98 88 76 Q72 84 66 66 Z" fill="${b}"/>
+      <circle cx="120" cy="62" r="10" fill="${b}"/><path d="M118 52c2-5 6-6 8-4" stroke="#5E9A77" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;
+  }
+  if (p.shape === 'tart'){
+    return `<svg viewBox="0 0 200 160" aria-hidden="true">${shadow}
+      <path d="M22 96 L36 132 H164 L178 96 Z" fill="${a}"/>
+      <ellipse cx="100" cy="96" rx="78" ry="20" fill="${a}"/>
+      <ellipse cx="100" cy="94" rx="66" ry="15" fill="${b}"/>
+      ${[[80,92],[100,98],[120,90],[92,86],[112,100],[130,96],[70,98]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="${c}"/>`).join('')}</svg>`;
+  }
+  return `<svg viewBox="0 0 200 160" aria-hidden="true">${shadow}
+    <path d="M28 134 Q28 58 100 58 Q172 58 172 134 Z" fill="${a}"/>
+    <path d="M40 116 Q42 70 100 68 Q158 70 160 116 Q100 126 40 116 Z" fill="${b}"/>
+    <path d="M62 84 L92 116 M86 72 L124 118 M114 70 L146 106 M138 78 L76 118 M112 72 L56 106 M150 96 L118 120" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg>`;
+}
+
+/* ======================= CÁLCULOS ======================= */
+function totals(){
+  const sub = r2(state.cart.reduce((s,l)=>s+l.price*l.qty,0));
+  const count = state.cart.reduce((s,l)=>s+l.qty,0);
+  let disc = 0, couponError = null;
+  if (state.coupon){
+    const c = COUPONS[state.coupon];
+    if (c.type==='pct') disc = r2(sub*c.value);
+    else if (sub >= c.min) disc = Math.min(c.value, sub);
+    else couponError = `El cupón ${state.coupon} requiere una compra mínima de ${money(c.min)}.`;
+  }
+  const base = r2(sub - disc);
+  let envio = null;
+  if (state.order.metodo === 'tienda') envio = 0;
+  if (state.order.metodo === 'domicilio') envio = base >= ENVIO_GRATIS ? 0 : ENVIO;
+  const total = r2(base + (envio || 0));
+  const iva = r2(total - total/(1+IVA));
+  return {sub, count, disc, envio, total, iva, couponError};
+}
+const stockUsed = (id, exceptKey) => state.cart.filter(l=>l.id===id && l.key!==exceptKey).reduce((s,l)=>s+l.qty,0);
+
+/* ======================= HEADER ======================= */
+function updateBadge(bump){
+  const n = totals().count, b = $('#cartCount');
+  b.textContent = n;
+  if (bump){ b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+}
+$('#cartBtn').onclick = () => location.hash = '#/carrito';
+
+/* ======================= STEPPER ======================= */
+function renderSteppers(){
+  const labels = ['Carrito','Entrega','Pago','Confirmación'];
+  $$('.stepper').forEach(el => {
+    const cur = +el.dataset.step;
+    el.innerHTML = labels.map((l,i)=>{
+      const n=i+1, cls = n<cur ? 'done' : n===cur ? 'now' : '';
+      return `<div class="step ${cls}" ${n===cur?'aria-current="step"':''}><span class="n">${n<cur?'✓':n}</span>${l}</div>`;
+    }).join('');
+  });
+}
+
+/* ======================= CATÁLOGO ======================= */
+function renderCatalog(){
+  const cats = ['Todos', ...new Set(PRODUCTS.map(p=>p.cat))];
+  $('#chips').innerHTML = cats.map(c=>`<button class="chip ${state.filter===c?'on':''}" role="tab" aria-selected="${state.filter===c}" data-cat="${c}">${c}</button>`).join('');
+  $$('#chips .chip').forEach(b => b.onclick = () => { state.filter = b.dataset.cat; renderCatalog(); });
+  const q = state.query.trim().toLowerCase();
+  const list = PRODUCTS.filter(p => (state.filter==='Todos' || p.cat===state.filter) && (!q || (p.name+' '+p.desc).toLowerCase().includes(q)));
+  if (!list.length){ $('#grid').innerHTML = `<div class="empty-search card" style="grid-column:1/-1">No encontramos productos para “${esc(state.query)}”. <button class="link" id="clearQ">Limpiar búsqueda</button></div>`; $('#clearQ').onclick=()=>{state.query='';$('#search').value='';renderCatalog();}; return; }
+  $('#grid').innerHTML = list.map(p => {
+    const min = Math.min(...p.sizes.map(s=>s.price)), out = p.stock===0;
+    return `<article class="card prod ${out?'soldout':''}" tabindex="0" data-id="${p.id}" aria-label="${p.name}">
+      <div class="art">${art(p)}${out?'<span class="tag out">Agotado</span>':p.tag?`<span class="tag">${p.tag}</span>`:''}</div>
+      <div class="body"><h3>${p.name}</h3><p class="desc">${p.desc}</p>
+        <div class="foot"><span class="price"><small>desde </small>${money(min)}</span>
+          <button class="btn ${out?'btn-ghost':'btn-primary'}" style="padding:9px 14px" data-id="${p.id}">${out?'Ver detalle':'Elegir'}</button></div></div></article>`;
+  }).join('');
+  $$('#grid .prod').forEach(c => {
+    c.onclick = () => location.hash = '#/producto/'+c.dataset.id;
+    c.onkeydown = e => { if(e.key==='Enter') c.click(); };
+  });
+}
+$('#search').oninput = e => { state.query = e.target.value; renderCatalog(); };
+$('#heroArt').innerHTML = art(PRODUCTS[0]);
+
+/* ======================= DETALLE ======================= */
+function renderDetail(id){
+  const p = byId(id);
+  if (!p){ $('#detalle').innerHTML = `<div class="empty card">${alertHTML('error','El producto que buscas no existe o fue retirado.')}<a href="#/" class="btn btn-primary">Ir al catálogo</a></div>`; return; }
+  const d = state.detail;
+  if (!d.size || d.pid !== id){ state.detail = {pid:id, size:p.sizes[0].id, qty:1, msg:''}; }
+  draw();
+  function draw(){
+    const d = state.detail, s = p.sizes.find(x=>x.id===d.size);
+    const avail = Math.max(0, p.stock - stockUsed(p.id));
+    const out = p.stock === 0, noneLeft = !out && avail === 0;
+    const over = d.qty > avail;
+    const stockCls = out ? 'out' : p.stock<=3 ? 'low' : '';
+    const stockTxt = out ? 'Agotado por hoy' : p.stock<=3 ? `¡Últimas ${p.stock} unidades!` : `Disponible · ${p.stock} en existencia`;
+    $('#detalle').innerHTML = `
+      <div class="crumbs"><a href="#/">Catálogo</a> / ${p.cat} / ${p.name}</div>
+      <div class="detail">
+        <div class="art">${art(p)}</div>
+        <div>
+          <span class="stock ${stockCls}"><span class="dot"></span>${stockTxt}</span>
+          <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)">${p.name}</h1>
+          <p style="color:var(--gris);font-size:1.05rem">${p.desc}</p>
+          ${out ? alertHTML('error','<b>Producto agotado.</b> No es posible agregarlo al carrito en este momento. Te sugerimos el Cheesecake de Fresa.') : ''}
+          ${noneLeft ? alertHTML('warn','Ya tienes en tu carrito todas las unidades disponibles de este producto.') : ''}
+          <h3 style="font-size:1.05rem;margin-top:18px">Tamaño</h3>
+          <div class="opts" role="radiogroup" aria-label="Tamaño">
+            ${p.sizes.map(x=>`<button class="opt-size ${x.id===d.size?'on':''}" role="radio" aria-checked="${x.id===d.size}" data-size="${x.id}" ${out?'disabled':''}><b>${x.label}</b><span>${x.detail}</span><em>${money(x.price)}</em></button>`).join('')}
+          </div>
+          ${p.msg && s.id!=='p' ? `<div class="field"><label for="d-msg">Dedicatoria en el pastel <span class="opt">(opcional, sin costo)</span></label><input id="d-msg" maxlength="30" placeholder="¡Feliz cumpleaños, Ana!" value="${esc(d.msg)}"><span style="font-size:.8rem;color:var(--gris)" id="msgCount">${d.msg.length}/30</span></div>`:''}
+          <h3 style="font-size:1.05rem">Cantidad</h3>
+          <div class="qty" aria-label="Cantidad">
+            <button id="qMinus" aria-label="Restar" ${d.qty<=1||out?'disabled':''}>−</button>
+            <input id="qInput" type="number" min="1" value="${d.qty}" aria-label="Cantidad" ${out?'disabled':''}>
+            <button id="qPlus" aria-label="Sumar" ${d.qty>=avail||out?'disabled':''}>+</button>
+          </div>
+          ${over && !out && !noneLeft ? `<div class="alert error" style="margin-top:10px">${icons.err}<div>Solo quedan <b>${avail}</b> unidades disponibles.</div></div>`:''}
+          <div class="calc" aria-live="polite">
+            <div><span>Precio unitario</span><span>${money(s.price)}</span></div>
+            <div><span>Cantidad</span><span>× ${d.qty}</span></div>
+            <div class="big"><span>Costo</span><span>${money(r2(s.price*d.qty))}</span></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="addBtn" style="flex:1" ${out||noneLeft||over?'disabled':''}>Agregar al carrito</button>
+            <button class="btn btn-ghost" id="buyBtn" ${out||noneLeft||over?'disabled':''}>Comprar ahora</button>
+          </div>
+          <p style="font-size:.85rem;color:var(--gris);margin-top:12px">Pasteles medianos y grandes se preparan con al menos 24 horas de anticipación.</p>
+        </div>
+      </div>`;
+    $$('.opt-size').forEach(b => b.onclick = () => { state.detail.size = b.dataset.size; draw(); });
+    const m = $('#d-msg'); if (m) m.oninput = e => { state.detail.msg = e.target.value; $('#msgCount').textContent = e.target.value.length+'/30'; };
+    $('#qMinus').onclick = () => { state.detail.qty = Math.max(1, d.qty-1); draw(); };
+    $('#qPlus').onclick = () => { state.detail.qty = d.qty+1; draw(); };
+    $('#qInput').onchange = e => { const v = parseInt(e.target.value,10); state.detail.qty = isNaN(v)||v<1 ? 1 : v; draw(); };
+    $('#addBtn').onclick = () => add(false);
+    $('#buyBtn').onclick = () => add(true);
+  }
+  function add(go){
+    const d = state.detail, s = p.sizes.find(x=>x.id===d.size);
+    const msg = (p.msg && s.id!=='p') ? d.msg.trim() : '';
+    const key = p.id+'|'+s.id+'|'+msg;
+    const avail = p.stock - stockUsed(p.id);
+    if (d.qty > avail){ toast(`Solo quedan ${avail} unidades disponibles.`,'error'); return; }
+    const ex = state.cart.find(l=>l.key===key);
+    if (ex) ex.qty += d.qty;
+    else state.cart.push({key, id:p.id, name:p.name, size:s.id, sizeLabel:s.label, detail:s.detail, price:s.price, qty:d.qty, msg});
+    save(); updateBadge(true);
+    state.detail.qty = 1;
+    if (go) location.hash = '#/carrito';
+    else { toast(`${p.name} (${s.label}) agregado al carrito`,'ok',{label:'Ver carrito',fn:()=>location.hash='#/carrito'}); draw(); }
+  }
+}
+
+/* ======================= RESUMEN ======================= */
+function summaryHTML(opts={}){
+  const t = totals();
+  const envioTxt = t.envio===null ? '<span style="color:var(--gris)">Se calcula en el siguiente paso</span>' : t.envio===0 ? '<span style="color:var(--exito)">Gratis</span>' : money(t.envio);
+  return `
+    <h2 style="font-size:1.25rem">Resumen del pedido</h2>
+    ${opts.items ? `<div style="border-bottom:1px solid var(--linea);padding-bottom:10px;margin-bottom:10px">${state.cart.map(l=>`<div class="mini"><span>${l.qty} × ${esc(l.name)} · ${l.sizeLabel}</span><span>${money(r2(l.price*l.qty))}</span></div>`).join('')}</div>` : ''}
+    <div class="sum-row"><span>Subtotal (${t.count} ${t.count===1?'artículo':'artículos'})</span><b>${money(t.sub)}</b></div>
+    ${t.disc ? `<div class="sum-row disc"><span>Cupón ${state.coupon}</span><b>−${money(t.disc)}</b></div>`:''}
+    <div class="sum-row"><span>Envío</span><b>${envioTxt}</b></div>
+    <div class="sum-total"><span>Total</span><b>${money(t.total)}</b></div>
+    <div class="sum-note">Incluye IVA (13 %): ${money(t.iva)}</div>
+    ${state.order.metodo==='domicilio' && t.envio>0 ? `<div class="alert info" style="margin-top:12px">${icons.info}<div>Te faltan <b>${money(r2(ENVIO_GRATIS-(t.sub-t.disc)))}</b> para obtener envío gratis.</div></div>`:''}
+    ${opts.footer||''}`;
+}
+
+/* ======================= CARRITO ======================= */
+function renderCart(){
+  const t = totals();
+  if (!state.cart.length){
+    $('#carrito').innerHTML = `<div class="card empty">
+      <svg viewBox="0 0 120 100" aria-hidden="true"><ellipse cx="60" cy="92" rx="44" ry="6" fill="#E8DFD0"/><path d="M22 34h76l-8 48H30z" fill="#fff" stroke="#C9853F" stroke-width="3" stroke-linejoin="round"/><path d="M40 34c0-12 8-20 20-20s20 8 20 20" fill="none" stroke="#1F4D3A" stroke-width="3" stroke-linecap="round"/><path d="M48 58q12 8 24 0" stroke="#C9853F" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      <h2>Tu carrito está vacío</h2><p>Aún no has agregado nada. ¡Nuestro tres leches te está esperando!</p>
+      <a href="#/" class="btn btn-primary">Explorar el catálogo</a></div>`;
+    return;
+  }
+  $('#carrito').innerHTML = `<div class="two">
+    <div class="card panel">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><h2>Tu carrito</h2><button class="link" id="emptyCart" style="color:var(--error)">Vaciar carrito</button></div>
+      ${state.cart.map(l => {
+        const p = byId(l.id), max = p.stock - stockUsed(l.id, l.key);
+        return `<div class="line" data-key="${esc(l.key)}">
+          <div class="thumb">${art(p)}</div>
+          <div><h3>${esc(l.name)}</h3><div class="meta">${l.sizeLabel} · ${l.detail} · ${money(l.price)} c/u</div>
+            ${l.msg?`<div class="meta">✍️ “${esc(l.msg)}”</div>`:''}
+            <div class="ctrl">
+              <div class="qty sm"><button data-a="minus" aria-label="Restar" ${l.qty<=1?'disabled':''}>−</button><input data-a="input" type="number" min="1" value="${l.qty}" aria-label="Cantidad de ${esc(l.name)}"><button data-a="plus" aria-label="Sumar" ${l.qty>=max?'disabled':''}>+</button></div>
+              <button class="remove" data-a="remove">Eliminar</button>
+              ${l.qty>=max?`<span style="font-size:.8rem;color:var(--aviso)">Máximo disponible</span>`:''}
+            </div></div>
+          <div class="cost"><b>${money(r2(l.price*l.qty))}</b><span>${l.qty} × ${money(l.price)}</span></div>
+        </div>`;}).join('')}
+      <a href="#/" class="btn btn-ghost" style="margin-top:14px">← Seguir comprando</a>
+    </div>
+    <aside class="card panel sticky">
+      ${summaryHTML({footer:`
+        <form class="coupon" id="couponForm"><input id="couponIn" placeholder="Código de cupón" aria-label="Código de cupón" ${state.coupon?'disabled':''} value="${state.coupon||''}"><button class="btn btn-ghost" type="submit">${state.coupon?'Quitar':'Aplicar'}</button></form>
+        <div id="couponMsg">${t.couponError?alertHTML('warn',t.couponError):state.coupon?alertHTML('ok',`Cupón <b>${state.coupon}</b> aplicado: ${COUPONS[state.coupon].label}.`):'<div class="sum-note">Prueba con <b>CEIBA10</b> o <b>BIENVENIDA</b>.</div>'}</div>
+        <a href="#/datos" class="btn btn-primary btn-block" style="margin-top:14px">Continuar con la entrega →</a>`})}
+    </aside></div>`;
+
+  $$('#carrito .line').forEach(row => {
+    const key = row.dataset.key, l = state.cart.find(x=>x.key===key), p = byId(l.id);
+    const max = () => p.stock - stockUsed(l.id, l.key);
+    row.querySelectorAll('[data-a]').forEach(el => {
+      const a = el.dataset.a;
+      if (a==='minus') el.onclick = () => { l.qty--; commit(); };
+      if (a==='plus') el.onclick = () => { if (l.qty+1>max()) return toast(`Solo hay ${max()} unidades disponibles.`,'error'); l.qty++; commit(); };
+      if (a==='input') el.onchange = e => { let v=parseInt(e.target.value,10); if(isNaN(v)||v<1) v=1; if(v>max()){ toast(`Solo hay ${max()} unidades de ${p.name}. Ajustamos la cantidad.`,'error'); v=max(); } l.qty=v; commit(); };
+      if (a==='remove') el.onclick = () => {
+        const idx = state.cart.indexOf(l); state.cart.splice(idx,1); commit();
+        toast(`${l.name} eliminado`,'',{label:'Deshacer',fn:()=>{state.cart.splice(idx,0,l);commit();}});
+      };
+    });
+  });
+  $('#emptyCart').onclick = () => {
+    if (!confirm('¿Seguro que quieres vaciar el carrito?')) return;
+    const backup = [...state.cart]; state.cart = []; commit();
+    toast('Carrito vaciado','',{label:'Deshacer',fn:()=>{state.cart=backup;commit();}});
+  };
+  $('#couponForm').onsubmit = e => {
+    e.preventDefault();
+    if (state.coupon){ state.coupon=null; commit(); return; }
+    const code = $('#couponIn').value.trim().toUpperCase();
+    if (!code){ $('#couponMsg').innerHTML = alertHTML('error','Escribe un código de cupón.'); return; }
+    if (!COUPONS[code]){ $('#couponMsg').innerHTML = alertHTML('error',`El cupón <b>${esc(code)}</b> no existe o ya venció.`); $('#couponIn').focus(); return; }
+    const c = COUPONS[code];
+    if (c.min && totals().sub < c.min){ $('#couponMsg').innerHTML = alertHTML('error',`<b>${code}</b> requiere una compra mínima de ${money(c.min)}.`); return; }
+    state.coupon = code; commit(); toast('Cupón aplicado','ok');
+  };
+  function commit(){ save(); updateBadge(); renderCart(); }
+}
+
+/* ======================= DATOS DE ENTREGA ======================= */
+const fDatos = $('#formDatos');
+function tomorrow(){ const d=new Date(); d.setDate(d.getDate()+1); return d.toISOString().slice(0,10); }
+function initDatos(){
+  const o = state.order;
+  $('#f-fecha').min = tomorrow();
+  if (o.metodo) $('#m-'+o.metodo).checked = true;
+  [['nombre','f-nombre'],['tel','f-tel'],['email','f-email'],['dir','f-dir'],['muni','f-muni'],['ref','f-ref'],['fecha','f-fecha'],['hora','f-hora'],['notas','f-notas']].forEach(([k,id])=>{ if(o[k]!==undefined) $('#'+id).value = o[k]; });
+  toggleDir();
+  $('#datosAlert').innerHTML = '';
+  $('#sumDatos').innerHTML = summaryHTML({items:true});
+}
+function toggleDir(){ $('#fsDireccion').hidden = state.order.metodo !== 'domicilio'; }
+$$('input[name=metodo]').forEach(r => r.onchange = () => { state.order.metodo = r.value; setValid('metodo',true); save(); toggleDir(); $('#sumDatos').innerHTML = summaryHTML({items:true}); });
+$('#f-tel').oninput = e => { let v=e.target.value.replace(/\D/g,'').slice(0,8); e.target.value = v.length>4 ? v.slice(0,4)+'-'+v.slice(4) : v; };
+function setValid(f, ok, msgEl, msg){
+  const el = document.querySelector(`[data-f="${f}"]`); if(!el) return ok;
+  el.classList.toggle('invalid', !ok); el.classList.toggle('valid', ok);
+  if (msgEl && msg) $(msgEl).textContent = msg;
+  return ok;
+}
+const datosRules = {
+  nombre: () => setValid('nombre', $('#f-nombre').value.trim().split(/\s+/).filter(w=>w.length>1).length >= 2),
+  tel: () => setValid('tel', /^[267]\d{3}-\d{4}$/.test($('#f-tel').value)),
+  email: () => setValid('email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('#f-email').value.trim())),
+  dir: () => state.order.metodo!=='domicilio' || setValid('dir', $('#f-dir').value.trim().length >= 8),
+  muni: () => {
+    if (state.order.metodo!=='domicilio') return true;
+    const v = $('#f-muni').value;
+    if (!v) return setValid('muni', false, '#muniErr', 'Selecciona un municipio.');
+    if (v==='fuera') return setValid('muni', false, '#muniErr', 'Lo sentimos, aún no hacemos envíos a esa zona. Elige retiro en tienda.');
+    return setValid('muni', true);
+  },
+  fecha: () => {
+    const v = $('#f-fecha').value;
+    if (!v) return setValid('fecha', false, '#fechaErr', 'Elige una fecha.');
+    if (v < tomorrow()) return setValid('fecha', false, '#fechaErr', 'Los pedidos requieren al menos 24 h de anticipación.');
+    if (new Date(v+'T12:00').getDay()===0 && state.order.metodo==='domicilio') return setValid('fecha', false, '#fechaErr', 'No hacemos envíos los domingos. Elige otro día o retiro en tienda.');
+    return setValid('fecha', true);
+  },
+  hora: () => setValid('hora', !!$('#f-hora').value)
+};
+const map = {nombre:'f-nombre',tel:'f-tel',email:'f-email',dir:'f-dir',muni:'f-muni',fecha:'f-fecha',hora:'f-hora'};
+Object.entries(map).forEach(([k,id]) => {
+  const el = $('#'+id);
+  el.addEventListener('blur', () => { if (el.value) datosRules[k](); });
+  el.addEventListener('change', () => datosRules[k]());
+});
+fDatos.onsubmit = e => {
+  e.preventDefault();
+  let ok = setValid('metodo', !!state.order.metodo);
+  for (const k in datosRules) ok = datosRules[k]() && ok;
+  if (!ok){
+    $('#datosAlert').innerHTML = alertHTML('error','<b>Revisa los campos marcados</b> para continuar.');
+    const first = fDatos.querySelector('.invalid input, .invalid select'); if (first) first.focus();
+    window.scrollTo({top:0,behavior:'smooth'});
+    return;
+  }
+  Object.assign(state.order, {
+    nombre:$('#f-nombre').value.trim(), tel:$('#f-tel').value, email:$('#f-email').value.trim(),
+    dir:$('#f-dir').value.trim(), muni:$('#f-muni').value, ref:$('#f-ref').value.trim(),
+    fecha:$('#f-fecha').value, hora:$('#f-hora').value, notas:$('#f-notas').value.trim(), ok:true
+  });
+  save(); location.hash = '#/pago';
+};
+
+/* ======================= PAGO ======================= */
+const fPago = $('#formPago');
+function initPago(){
+  const o = state.order, t = totals();
+  $('#efLabel').textContent = o.metodo==='tienda' ? 'Pago en tienda' : 'Efectivo contra entrega';
+  $('#efHint').textContent = o.metodo==='tienda' ? 'Pagas al retirar' : 'Pagas al recibir';
+  $('#payBtn').textContent = `Pagar ${money(t.total)}`;
+  $('#pagoAlert').innerHTML = alertHTML('info', `Entrega: <b>${o.metodo==='tienda'?'Retiro en tienda':'A domicilio, '+esc(o.muni)}</b> · ${fmtDate(o.fecha)}, ${o.hora}. <a href="#/datos" style="font-weight:700">Cambiar</a>`);
+  $('#sumPago').innerHTML = summaryHTML({items:true});
+  togglePago();
+}
+function togglePago(){
+  const m = fPago.pago.value;
+  $('#boxTarjeta').hidden = m!=='tarjeta'; $('#boxEfectivo').hidden = m!=='efectivo';
+  const t = totals();
+  $('#payBtn').textContent = m==='tarjeta' ? `Pagar ${money(t.total)}` : 'Confirmar pedido';
+}
+$$('input[name=pago]').forEach(r => r.onchange = togglePago);
+function luhn(n){ let s=0,alt=false; for(let i=n.length-1;i>=0;i--){ let d=+n[i]; if(alt){d*=2;if(d>9)d-=9;} s+=d; alt=!alt; } return s%10===0; }
+function brand(n){ return /^4/.test(n)?'VISA':/^5[1-5]/.test(n)?'MASTERCARD':/^3[47]/.test(n)?'AMEX':'TARJETA'; }
+$('#c-num').oninput = e => {
+  const d = e.target.value.replace(/\D/g,'').slice(0,16);
+  e.target.value = d.replace(/(.{4})/g,'$1 ').trim();
+  $('#ccNum').textContent = (d + '•'.repeat(16-d.length)).replace(/(.{4})/g,'$1 ').trim();
+  $('#ccBrand').textContent = brand(d);
+};
+$('#c-name').oninput = e => $('#ccName').textContent = e.target.value.toUpperCase() || 'NOMBRE DEL TITULAR';
+$('#c-exp').oninput = e => { let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v; $('#ccExp').textContent = v || 'MM/AA'; };
+$('#c-cvv').oninput = e => e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
+$$('.testcards code').forEach(c => c.onclick = () => {
+  $('#c-num').value = c.dataset.card; $('#c-num').dispatchEvent(new Event('input'));
+  if (!$('#c-name').value){ $('#c-name').value = state.order.nombre||'Cliente Demo'; $('#c-name').dispatchEvent(new Event('input')); }
+  if (!$('#c-exp').value){ $('#c-exp').value = '12/'+String((new Date().getFullYear()+2)%100).padStart(2,'0'); $('#c-exp').dispatchEvent(new Event('input')); }
+  if (!$('#c-cvv').value) $('#c-cvv').value = '123';
+  $$('#boxTarjeta .field').forEach(f=>f.classList.remove('invalid'));
+});
+const pagoRules = {
+  cnum: () => { const d=$('#c-num').value.replace(/\s/g,''); return setValid('cnum', d.length===16 && luhn(d)); },
+  cname: () => setValid('cname', $('#c-name').value.trim().length >= 4),
+  cexp: () => {
+    const v=$('#c-exp').value, m=v.match(/^(\d{2})\/(\d{2})$/);
+    if (!m || +m[1]<1 || +m[1]>12) return setValid('cexp', false, '#expErr', 'Usa el formato MM/AA.');
+    const exp = new Date(2000+ +m[2], +m[1], 0, 23, 59);
+    if (exp < new Date()) return setValid('cexp', false, '#expErr', 'La tarjeta está vencida.');
+    return setValid('cexp', true);
+  },
+  ccvv: () => setValid('ccvv', /^\d{3,4}$/.test($('#c-cvv').value))
+};
+['cnum','cname','cexp','ccvv'].forEach(k => { const id={cnum:'c-num',cname:'c-name',cexp:'c-exp',ccvv:'c-cvv'}[k]; $('#'+id).addEventListener('blur', e => { if(e.target.value) pagoRules[k](); }); });
+
+fPago.onsubmit = e => {
+  e.preventDefault();
+  const m = fPago.pago.value, t = totals();
+  let ok = true;
+  if (m==='tarjeta') for (const k in pagoRules) ok = pagoRules[k]() && ok;
+  else {
+    const v = $('#e-cambio').value.trim();
+    if (v){ const n = parseFloat(v.replace(',','.')); ok = setValid('cambio', !isNaN(n) && n >= t.total, '#cambioErr', `El monto debe ser de al menos ${money(t.total)}.`) && ok; }
+    else setValid('cambio', true);
+  }
+  const terms = $('#terms').checked;
+  const tf = document.querySelector('[data-f="terms"] .err'); tf.style.display = terms ? 'none' : 'block';
+  ok = terms && ok;
+  if (!ok){
+    $('#pagoAlert').innerHTML = alertHTML('error','<b>No pudimos procesar el formulario.</b> Corrige los campos marcados en rojo.');
+    window.scrollTo({top:0,behavior:'smooth'}); return;
+  }
+  process(m);
+};
+
+function process(method){
+  const card = $('#c-num').value.replace(/\s/g,'');
+  const steps = method==='tarjeta' ? ['Validando datos de la tarjeta','Contactando al banco emisor','Confirmando el pedido'] : ['Verificando disponibilidad','Reservando tu pedido','Confirmando el pedido'];
+  $('#procT').textContent = method==='tarjeta' ? 'Procesando tu pago' : 'Confirmando tu pedido';
+  $('#overlay').classList.add('on');
+  let i = 0;
+  const paint = () => $('#procSteps').innerHTML = steps.map((s,k)=>`<div class="${k<i?'d':''}">${k<i?'✓':k===i?'⏳':'○'} ${s}</div>`).join('');
+  paint();
+  const iv = setInterval(() => { i++; paint(); }, 700);
+  setTimeout(() => {
+    clearInterval(iv); $('#overlay').classList.remove('on');
+    // Revalida stock (simula que otro cliente compró)
+    const t = totals();
+    if (method==='tarjeta' && card==='4000000000000002'){
+      state.lastError = {code:'DECLINED', title:'Pago rechazado', msg:'Tu banco rechazó la transacción por fondos insuficientes. No se realizó ningún cargo.', hint:'Prueba con otra tarjeta o elige pagar en efectivo.'};
+      location.hash = '#/error'; return;
+    }
+    if (method==='tarjeta' && card==='4000000000000119'){
+      state.lastError = {code:'NETWORK', title:'No pudimos conectar con el banco', msg:'Hubo un problema de conexión al procesar el pago. Tu pedido sigue guardado y no se hizo ningún cargo.', hint:'Espera unos segundos e inténtalo de nuevo.', retry:true};
+      location.hash = '#/error'; return;
+    }
+    const code = 'LC-' + Date.now().toString().slice(-6);
+    state.lastOrder = {code, items:JSON.parse(JSON.stringify(state.cart)), totals:t, order:{...state.order}, method, coupon:state.coupon, card: method==='tarjeta' ? brand(card)+' •••• '+card.slice(-4) : null, at:new Date()};
+    PRODUCTS.forEach(p => { const used = stockUsed(p.id); p.stock = Math.max(0, p.stock - used); });
+    state.cart = []; state.coupon = null; state.order = {nombre:state.order.nombre, tel:state.order.tel, email:state.order.email};
+    save(); updateBadge(); fPago.reset(); $('#c-num').dispatchEvent(new Event('input')); $('#c-name').dispatchEvent(new Event('input')); $('#ccExp').textContent='MM/AA';
+    location.hash = '#/exito';
+  }, 2300);
+}
+
+/* ======================= RESULTADOS ======================= */
+function fmtDate(iso){ if(!iso) return ''; return new Date(iso+'T12:00').toLocaleDateString('es-SV',{weekday:'long',day:'numeric',month:'long'}); }
+function renderSuccess(){
+  const L = state.lastOrder, o = L.order, t = L.totals;
+  $('#exito').innerHTML = `<div class="result ok">
+    <div class="icon">${icons.ok}</div>
+    <h1>¡Pedido confirmado!</h1>
+    <p class="lead">Gracias, ${esc(o.nombre.split(' ')[0])}. Enviamos el comprobante a <b>${esc(o.email)}</b>.</p>
+    <div class="timeline"><div class="on"><i></i>Recibido</div><div><i></i>En el horno</div><div><i></i>${o.metodo==='tienda'?'Listo para retirar':'En camino'}</div><div><i></i>Entregado</div></div>
+    <div class="card ticket">
+      <div class="head"><div><div style="color:var(--gris);font-size:.85rem">Número de pedido</div><div class="code">${L.code}</div></div>
+        <div style="text-align:right"><div style="color:var(--gris);font-size:.85rem">${o.metodo==='tienda'?'Retiro en tienda':'Entrega a domicilio'}</div><b>${fmtDate(o.fecha)}</b><div style="font-size:.9rem">${o.hora}</div></div></div>
+      ${L.items.map(l=>`<div class="mini"><span>${l.qty} × ${esc(l.name)} · ${l.sizeLabel}${l.msg?` · “${esc(l.msg)}”`:''}</span><span>${money(r2(l.price*l.qty))}</span></div>`).join('')}
+      <div style="border-top:1px solid var(--linea);margin-top:10px;padding-top:10px">
+        <div class="mini"><span>Subtotal</span><span>${money(t.sub)}</span></div>
+        ${t.disc?`<div class="mini"><span>Cupón ${L.coupon}</span><span style="color:var(--exito)">−${money(t.disc)}</span></div>`:''}
+        <div class="mini"><span>Envío</span><span>${t.envio?money(t.envio):'Gratis'}</span></div>
+        <div class="mini" style="font-weight:700;font-size:1.05rem"><span style="color:var(--tinta)">Total ${L.method==='tarjeta'?'pagado':'a pagar'}</span><span>${money(t.total)}</span></div>
+        <div class="mini"><span>IVA incluido</span><span>${money(t.iva)}</span></div>
+        <div class="mini"><span>Método de pago</span><span>${L.card || (o.metodo==='tienda'?'Pago en tienda':'Efectivo contra entrega')}</span></div>
+        ${o.metodo==='domicilio'?`<div class="mini"><span>Dirección</span><span style="text-align:right">${esc(o.dir)}, ${esc(o.muni)}</span></div>`:''}
+      </div>
+    </div>
+    <div class="actions"><a href="#/" class="btn btn-primary">Volver al inicio</a><button class="btn btn-ghost" onclick="window.print()">Imprimir comprobante</button></div>
+  </div>`;
+}
+function renderError(){
+  const E = state.lastError;
+  $('#errorBox').innerHTML = `<div class="result bad">
+    <div class="icon">${icons.err}</div>
+    <h1>${E.title}</h1>
+    <p class="lead">${E.msg}</p>
+    ${alertHTML('warn', E.hint)}
+    <div class="card panel" style="text-align:left;margin:20px 0">${summaryHTML({items:true})}</div>
+    <div class="actions">
+      <a href="#/pago" class="btn btn-accent">${E.retry?'Reintentar pago':'Usar otro método de pago'}</a>
+      <a href="#/carrito" class="btn btn-ghost">Revisar carrito</a>
+    </div>
+    <p style="font-size:.8rem;color:var(--gris);margin-top:16px">Código de referencia: ${E.code}-${Date.now().toString().slice(-5)}</p>
+  </div>`;
+}
+
+/* ======================= ROUTER ======================= */
+function show(id){ $$('.screen').forEach(s=>s.classList.toggle('active', s.id===id)); window.scrollTo(0,0); }
+function route(){
+  const h = location.hash.replace(/^#\/?/,'');
+  const [view, param] = h.split('/');
+  if (view==='producto'){ renderDetail(param); return show('s-detalle'); }
+  if (view==='carrito'){ renderCart(); return show('s-carrito'); }
+  if (view==='datos'){
+    if (!state.cart.length){ toast('Agrega productos antes de continuar.','error'); location.replace('#/carrito'); return; }
+    initDatos(); return show('s-datos');
+  }
+  if (view==='pago'){
+    if (!state.cart.length){ toast('Tu carrito está vacío.','error'); location.replace('#/carrito'); return; }
+    if (!state.order.ok){ toast('Completa primero los datos de entrega.','error'); location.replace('#/datos'); return; }
+    if (totals().couponError){ toast('Hay un problema con tu cupón. Revísalo en el carrito.','error'); location.replace('#/carrito'); return; }
+    initPago(); return show('s-pago');
+  }
+  if (view==='exito'){ if(!state.lastOrder){ location.replace('#/'); return; } renderSuccess(); return show('s-exito'); }
+  if (view==='error'){ if(!state.lastError){ location.replace('#/pago'); return; } renderError(); return show('s-error'); }
+  if (view && view.startsWith('catalogo')) return;
+  renderCatalog(); show('s-catalogo');
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-scroll]');
+  if (a){ e.preventDefault(); if (!$('#s-catalogo').classList.contains('active')) location.hash='#/'; setTimeout(()=>$('#'+a.dataset.scroll).scrollIntoView({behavior:'smooth'}),60); }
+  const anc = e.target.closest('a[href="#catalogo"]');
+  if (anc){ e.preventDefault(); $('#catalogo').scrollIntoView({behavior:'smooth'}); }
+});
+window.addEventListener('hashchange', route);
+renderSteppers(); updateBadge(); route();
+</script>
+</body>
+</html>
